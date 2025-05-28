@@ -45,7 +45,7 @@ var (
 		"[]string":  reflect.TypeOf([]string{""}),
 	}
 
-	ctxType = reflect.TypeOf((*context.Context)(nil)).Elem()
+	ctxType = reflect.TypeOf((*context.Context)(nil)).Elem() // .Elem() 用于从接口指针类型获取接口本身的类型
 
 	typeConversionError = func(argValue interface{}, argTypeStr string) error {
 		return fmt.Errorf("%v is not %v", argValue, argTypeStr)
@@ -62,13 +62,16 @@ func NewErrUnsupportedType(valueType string) ErrUnsupportedType {
 	return ErrUnsupportedType{valueType}
 }
 
+// 实现了 Go 的 error 接口，可以作为普通错误使用
 // Error method so we implement the error interface
 func (e ErrUnsupportedType) Error() string {
 	return fmt.Sprintf("%v is not one of supported types", e.valueType)
 }
 
+// 将任意类型的参数（通常是从 JSON 或任务参数中反序列化出来的）转换为 Go 的 reflect.Value，以便后续通过反射调用任务函数
 // ReflectValue converts interface{} to reflect.Value based on string type
 func ReflectValue(valueType string, value interface{}) (reflect.Value, error) {
+	// 根据 valueType 判断要转换的是基础类型还是切片类型
 	if strings.HasPrefix(valueType, "[]") {
 		return reflectValues(valueType, value)
 	}
@@ -76,6 +79,7 @@ func ReflectValue(valueType string, value interface{}) (reflect.Value, error) {
 	return reflectValue(valueType, value)
 }
 
+// 将基础类型（非切片）字符串描述的类型和值转换为 reflect.Value
 // reflectValue converts interface{} to reflect.Value based on string type
 // representing a base type (not a slice)
 func reflectValue(valueType string, value interface{}) (reflect.Value, error) {
@@ -84,6 +88,8 @@ func reflectValue(valueType string, value interface{}) (reflect.Value, error) {
 		return reflect.Value{}, NewErrUnsupportedType(valueType)
 	}
 	theValue := reflect.New(theType)
+
+	// 根据不同的基础类型分别处理，例如 bool、int、uint、float、string 等，调用对应的 getXXXValue 方法做类型断言和转换
 
 	// Booleans
 	if theType.String() == "bool" {
@@ -143,6 +149,7 @@ func reflectValue(valueType string, value interface{}) (reflect.Value, error) {
 	return reflect.Value{}, NewErrUnsupportedType(valueType)
 }
 
+// 将切片类型（如 "[]int"、"[]string"）字符串描述的类型和值转换为 reflect.Value
 // reflectValues converts interface{} to reflect.Value based on string type
 // representing a slice of values
 func reflectValues(valueType string, value interface{}) (reflect.Value, error) {
@@ -158,6 +165,7 @@ func reflectValues(valueType string, value interface{}) (reflect.Value, error) {
 
 	var theValue reflect.Value
 
+	// 针对不同切片类型，遍历每个元素，调用对应的 getXXXValue 方法做类型断言和转换，最后组装成目标类型的切片 reflect.Value
 	// Booleans
 	if theType.String() == "[]bool" {
 		bools := reflect.ValueOf(value)
