@@ -15,6 +15,9 @@ import (
 	"github.com/RichardKnop/machinery/v2/tasks"
 )
 
+// 第四步：运行程序
+// 先输入 worker，启动 worker 消费者
+// 再不加参数，启动生产者
 func main() {
 	if len(os.Args) == 2 && os.Args[1] == "worker" { // 启动worker
 		if err := worker(); err != nil {
@@ -65,10 +68,29 @@ func TestPeriodicTask() {
 	fmt.Println(asyncResult)
 }
 
-// 第一：配置Server并注册任务
+// 第一步：添加两个方法：Add、PeriodicTask
+func Add(args ...int64) (int64, error) {
+	fmt.Println("执行Add方法...")
+	sum := int64(0)
+	for _, arg := range args {
+		sum += arg
+	}
+	fmt.Println("sum=", sum)
+	return sum, nil
+}
+
+func PeriodicTask() error {
+	fmt.Println("执行周期任务PeriodicTask...")
+	return nil
+}
+
+// 第二步：配置Server并注册任务
 func startServer() (*machinery.Server, error) {
 	cnf := &config.Config{
-		DefaultQueue:    "machinery_tasks",
+		DefaultQueue: "machinery_tasks",
+		// 这两个其实可以不用写，重要的是后面传入的 broker、backend 实例
+		Broker:          "redis://123456@localhost:6379",
+		ResultBackend:   "redis://localhost:6379",
 		ResultsExpireIn: 3600,
 		Redis: &config.RedisConfig{
 			MaxIdle:                3,
@@ -95,7 +117,7 @@ func startServer() (*machinery.Server, error) {
 	return server, server.RegisterTasks(tasksMap)
 }
 
-// 第二步：启动Worker
+// 第三步：启动Worker
 func worker() error {
 	//消费者的标记
 	consumerTag := "machinery_worker"
@@ -119,20 +141,4 @@ func worker() error {
 
 	// 这个方法会阻塞当前 goroutine，worker 会一直监听任务队列并消费任务，直到进程被终止
 	return worker.Launch()
-}
-
-// 第三步：添加异步执行函数
-func Add(args ...int64) (int64, error) {
-	println("############# 执行Add方法 #############")
-	sum := int64(0)
-	for _, arg := range args {
-		sum += arg
-	}
-	return sum, nil
-}
-
-// 第四步：添加一个周期性任务
-func PeriodicTask() error {
-	fmt.Println("################ 执行周期任务PeriodicTask #################")
-	return nil
 }

@@ -20,27 +20,31 @@ var ErrTaskPanicked = errors.New("Invoking task caused a panic")
 // Task wraps a signature and methods used to reflect task arguments and
 // return values after invoking the task
 type Task struct {
-	TaskFunc   reflect.Value
-	UseContext bool
-	Context    context.Context
-	Args       []reflect.Value
+	TaskFunc   reflect.Value   // 任务对应的函数对象，通过反射机制存储。这样可以动态调用不同的任务函数
+	UseContext bool            // 标记任务函数的第一个参数是否为 context.Context。如果为 true，调用任务时会自动把 context 作为第一个参数传入
+	Context    context.Context // 任务执行时用到的上下文对象，可以用于传递超时、取消信号、链路追踪等信息
+	Args       []reflect.Value // 任务参数列表，已经转换为反射值，方便后续通过反射调用任务函数
 }
 
+// 一个自定义类型的空结构体变量，用作 context 的 key
 type signatureCtxType struct{}
 
 var signatureCtx signatureCtxType
 
+// 从 context.Context 中获取当前任务的 Signature 对象
 // SignatureFromContext gets the signature from the context
 func SignatureFromContext(ctx context.Context) *Signature {
 	if ctx == nil {
 		return nil
 	}
 
+	// 获取 context 中以 signatureCtx 作为 key 存储的值
 	v := ctx.Value(signatureCtx)
 	if v == nil {
 		return nil
 	}
 
+	// 如果找到了，尝试类型断言为 *Signature 并返回
 	signature, _ := v.(*Signature)
 	return signature
 }
@@ -96,9 +100,9 @@ func New(taskFunc interface{}, args []Arg) (*Task, error) {
 // Call attempts to call the task with the supplied arguments.
 //
 // `err` is set in the return value in two cases:
-// 1. The reflected function invocation panics (e.g. due to a mismatched
-//    argument list).
-// 2. The task func itself returns a non-nil error.
+//  1. The reflected function invocation panics (e.g. due to a mismatched
+//     argument list).
+//  2. The task func itself returns a non-nil error.
 func (t *Task) Call() (taskResults []*TaskResult, err error) {
 	// retrieve the span from the task's context and finish it as soon as this function returns
 	if span := opentracing.SpanFromContext(t.Context); span != nil {

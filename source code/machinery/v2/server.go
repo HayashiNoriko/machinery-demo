@@ -107,16 +107,23 @@ func (server *Server) SetPreTaskHandler(handler func(*tasks.Signature)) {
 	server.prePublishHandler = handler
 }
 
+// 注册多个任务
 // RegisterTasks registers all tasks at once
 func (server *Server) RegisterTasks(namedTaskFuncs map[string]interface{}) error {
+	// 1. 遍历校验任务的有效性
 	for _, task := range namedTaskFuncs {
 		if err := tasks.ValidateTask(task); err != nil {
 			return err
 		}
 	}
+
+	// 2. 将任务保存到 server 中
 	for k, v := range namedTaskFuncs {
 		server.registeredTasks.Store(k, v)
 	}
+
+	// 3. 通知 broker
+	// 更新 broker 中的 registeredTaskNames
 	server.broker.SetRegisteredTaskNames(server.GetRegisteredTaskNames())
 	return nil
 }
