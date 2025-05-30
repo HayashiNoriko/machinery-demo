@@ -18,6 +18,7 @@ type Arg struct {
 
 // 任务头部信息
 // 可用于传递额外的元数据，如链路追踪信息
+// 原理：实现了 opentracing 的 TextMapReader/TextMapWriter 接口，可以用来传递 trace 信息
 // Headers represents the headers which should be used to direct the task
 type Headers map[string]interface{}
 

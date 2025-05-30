@@ -153,34 +153,44 @@ func (server *Server) GetRegisteredTask(name string) (interface{}, error) {
 	return taskFunc, nil
 }
 
+// 发送一个任务到消息队列，并在发送前将分布式追踪信息（ctx）注入到任务中。它支持带有 trace context 的任务链路追踪
 // SendTaskWithContext will inject the trace context in the signature headers before publishing it
 func (server *Server) SendTaskWithContext(ctx context.Context, signature *tasks.Signature) (*result.AsyncResult, error) {
+	// 1. 创建分布式追踪 span
+	// 从传入的 ctx 创建一个新的 trace span，便于后续链路追踪
 	span, _ := opentracing.StartSpanFromContext(ctx, "SendTask", tracing.ProducerOption(), tracing.MachineryTag)
 	defer span.Finish()
 
+	// 2. 将 trace 信息注入到任务 header
+	// 这样 worker 端可以继续 trace
 	// tag the span with some info about the signature
 	signature.Headers = tracing.HeadersWithSpan(signature.Headers, span)
 
+	// 3. 检查 result backend 是否配置
 	// Make sure result backend is defined
 	if server.backend == nil {
 		return nil, errors.New("Result backend required")
 	}
 
+	// 4. 自动生成任务 UUID
 	// Auto generate a UUID if not set already
 	if signature.UUID == "" {
 		taskID := uuid.New().String()
 		signature.UUID = fmt.Sprintf("task_%v", taskID)
 	}
 
+	// 5. 设置任务初始状态为 PENDING
 	// Set initial task state to PENDING
 	if err := server.backend.SetStatePending(signature); err != nil {
 		return nil, fmt.Errorf("Set state pending error: %s", err)
 	}
 
+	// 6. 调用 prePublishHandler
 	if server.prePublishHandler != nil {
 		server.prePublishHandler(signature)
 	}
 
+	// 7. 发布任务到 broker
 	if err := server.broker.Publish(ctx, signature); err != nil {
 		return nil, fmt.Errorf("Publish message error: %s", err)
 	}

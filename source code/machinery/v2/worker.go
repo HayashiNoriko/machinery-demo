@@ -440,7 +440,9 @@ func (worker *Worker) GetServer() *Server {
 	return worker.server
 }
 
+// 在 worker 启动消费前调用，返回 false 可阻止 worker 启动消费任务
 func (worker *Worker) PreConsumeHandler() bool {
+	// preConsumeHandler 是 worker 的一个钩子函数
 	if worker.preConsumeHandler == nil {
 		return true
 	}

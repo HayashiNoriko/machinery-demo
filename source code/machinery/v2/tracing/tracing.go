@@ -21,15 +21,17 @@ var (
 // StartSpanFromHeaders will extract a span from the signature headers
 // and start a new span with the given operation name.
 func StartSpanFromHeaders(headers tasks.Headers, operationName string) opentracing.Span {
+	// 尝试从 headers 中提取上游传递下来的 tracing 上下文（span context）
 	// Try to extract the span context from the carrier.
 	spanContext, err := opentracing.GlobalTracer().Extract(opentracing.TextMap, headers)
 
+	// 基于提取到的 spanContext 创建一个新的 span（如果没提取到就新建一个 trace）
 	// Create a new span from the span context if found or start a new trace with the function name.
 	// For clarity add the machinery component tag.
 	span := opentracing.StartSpan(
 		operationName,
-		ConsumerOption(spanContext),
-		MachineryTag,
+		ConsumerOption(spanContext), // 把 parent context 关联到新 span 上
+		MachineryTag,                // 给 span 打上 "machinery" 组件标签，方便后续在 trace 系统里筛选
 	)
 
 	// Log any error but don't fail
