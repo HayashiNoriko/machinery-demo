@@ -7,12 +7,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/RichardKnop/machinery/v2"
-	redisbackend "github.com/RichardKnop/machinery/v2/backends/redis"
-	redisbroker "github.com/RichardKnop/machinery/v2/brokers/redis"
-	"github.com/RichardKnop/machinery/v2/config"
-	eagerlock "github.com/RichardKnop/machinery/v2/locks/eager"
-	"github.com/RichardKnop/machinery/v2/tasks"
+	"demo/sourcecode/machinery/v2"
+	redisbackend "demo/sourcecode/machinery/v2/backends/redis"
+	redisbroker "demo/sourcecode/machinery/v2/brokers/redis"
+	"demo/sourcecode/machinery/v2/config"
+	eagerlock "demo/sourcecode/machinery/v2/locks/eager"
+	"demo/sourcecode/machinery/v2/tasks"
 )
 
 // 第四步：运行程序
