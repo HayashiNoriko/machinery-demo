@@ -10,16 +10,16 @@ import (
 	"github.com/google/uuid"
 	"github.com/robfig/cron/v3"
 
-	"github.com/RichardKnop/machinery/v2/backends/result"
-	"github.com/RichardKnop/machinery/v2/config"
-	"github.com/RichardKnop/machinery/v2/log"
-	"github.com/RichardKnop/machinery/v2/tasks"
-	"github.com/RichardKnop/machinery/v2/tracing"
-	"github.com/RichardKnop/machinery/v2/utils"
+	"demo/sourcecode/machinery/v2/backends/result"
+	"demo/sourcecode/machinery/v2/config"
+	"demo/sourcecode/machinery/v2/log"
+	"demo/sourcecode/machinery/v2/tasks"
+	"demo/sourcecode/machinery/v2/tracing"
+	"demo/sourcecode/machinery/v2/utils"
 
-	backendsiface "github.com/RichardKnop/machinery/v2/backends/iface"
-	brokersiface "github.com/RichardKnop/machinery/v2/brokers/iface"
-	lockiface "github.com/RichardKnop/machinery/v2/locks/iface"
+	backendsiface "demo/sourcecode/machinery/v2/backends/iface"
+	brokersiface "demo/sourcecode/machinery/v2/brokers/iface"
+	lockiface "demo/sourcecode/machinery/v2/locks/iface"
 	opentracing "github.com/opentracing/opentracing-go"
 )
 

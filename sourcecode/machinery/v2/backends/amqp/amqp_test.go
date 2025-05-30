@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/RichardKnop/machinery/v2/backends/amqp"
-	"github.com/RichardKnop/machinery/v2/config"
-	"github.com/RichardKnop/machinery/v2/tasks"
+	"demo/sourcecode/machinery/v2/backends/amqp"
+	"demo/sourcecode/machinery/v2/config"
+	"demo/sourcecode/machinery/v2/tasks"
 	"github.com/stretchr/testify/assert"
 )
 

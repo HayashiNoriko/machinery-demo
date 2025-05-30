@@ -1,10 +1,10 @@
 package amqp
 
 import (
+	"demo/sourcecode/machinery/v2/brokers/iface"
+	"demo/sourcecode/machinery/v2/config"
+	"demo/sourcecode/machinery/v2/tasks"
 	"fmt"
-	"github.com/RichardKnop/machinery/v2/brokers/iface"
-	"github.com/RichardKnop/machinery/v2/config"
-	"github.com/RichardKnop/machinery/v2/tasks"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"testing"
 	"time"

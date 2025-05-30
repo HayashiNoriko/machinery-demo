@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/RichardKnop/machinery/v2/utils"
+	"demo/sourcecode/machinery/v2/utils"
 
 	"github.com/google/uuid"
 )

@@ -1,14 +1,14 @@
 package redis_test
 
 import (
-	"github.com/RichardKnop/machinery/v2/backends/iface"
+	"demo/sourcecode/machinery/v2/backends/iface"
 	"os"
 	"strings"
 	"testing"
 
-	"github.com/RichardKnop/machinery/v2/backends/redis"
-	"github.com/RichardKnop/machinery/v2/config"
-	"github.com/RichardKnop/machinery/v2/tasks"
+	"demo/sourcecode/machinery/v2/backends/redis"
+	"demo/sourcecode/machinery/v2/config"
+	"demo/sourcecode/machinery/v2/tasks"
 	"github.com/stretchr/testify/assert"
 )
 

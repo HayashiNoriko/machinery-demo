@@ -4,12 +4,12 @@ import (
 	"os"
 	"testing"
 
-	"github.com/RichardKnop/machinery/v2"
-	"github.com/RichardKnop/machinery/v2/config"
+	"demo/sourcecode/machinery/v2"
+	"demo/sourcecode/machinery/v2/config"
 
-	amqpbackend "github.com/RichardKnop/machinery/v2/backends/amqp"
-	amqpbroker "github.com/RichardKnop/machinery/v2/brokers/amqp"
-	eagerlock "github.com/RichardKnop/machinery/v2/locks/eager"
+	amqpbackend "demo/sourcecode/machinery/v2/backends/amqp"
+	amqpbroker "demo/sourcecode/machinery/v2/brokers/amqp"
+	eagerlock "demo/sourcecode/machinery/v2/locks/eager"
 )
 
 func TestAmqpAmqp(t *testing.T) {

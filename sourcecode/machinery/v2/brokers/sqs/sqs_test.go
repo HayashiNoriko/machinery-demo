@@ -10,10 +10,10 @@ package sqs_test
 // 	"github.com/aws/aws-sdk-go/aws"
 // 	"github.com/stretchr/testify/assert"
 
-// 	"github.com/RichardKnop/machinery/v2"
-// 	"github.com/RichardKnop/machinery/v2/brokers/sqs"
-// 	"github.com/RichardKnop/machinery/v2/config"
-// 	"github.com/RichardKnop/machinery/v2/retry"
+// 	"demo/sourcecode/machinery/v2"
+// 	"demo/sourcecode/machinery/v2/brokers/sqs"
+// 	"demo/sourcecode/machinery/v2/config"
+// 	"demo/sourcecode/machinery/v2/retry"
 
 // 	awssqs "github.com/aws/aws-sdk-go/service/sqs"
 // )
