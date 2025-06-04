@@ -67,6 +67,8 @@ func (c consumerOption) Apply(o *opentracing.StartSpanOptions) {
 	opentracing_ext.SpanKindConsumer.Apply(o)
 }
 
+// StartSpanOption 是一个接口类型，只包含 Apply 方法；而 consumerOption 结构体实现了 Apply 方法，因此 consumerOption 可以作为 StartSpanOption 接口类型返回
+// producerOption 同理
 // ConsumerOption ...
 func ConsumerOption(producer opentracing.SpanContext) opentracing.StartSpanOption {
 	return consumerOption{producer}

@@ -319,7 +319,7 @@ func (b *BrokerGR) consume(deliveries <-chan []byte, concurrency int, taskProces
 		}
 	}()
 
-	// 3. 主循环：消费任务
+	// 3. 主循环：处理任务
 	for {
 		// 使用 select 监听两个 channel
 		select {

@@ -56,8 +56,23 @@ func (worker *Worker) LaunchAsync(errorsChan chan<- error) {
 	cnf := worker.server.GetConfig()
 	broker := worker.server.GetBroker()
 
-	// 1.输出一些配置信息，省略
+	// 1.输出一些配置信息
 	// Log some useful information about worker configuration
+	log.INFO.Printf("Launching a worker with the following settings:")
+	log.INFO.Printf("- Broker: %s", RedactURL(cnf.Broker))
+	if worker.Queue == "" {
+		log.INFO.Printf("- DefaultQueue: %s", cnf.DefaultQueue)
+	} else {
+		log.INFO.Printf("- CustomQueue: %s", worker.Queue)
+	}
+	log.INFO.Printf("- ResultBackend: %s", RedactURL(cnf.ResultBackend))
+	if cnf.AMQP != nil {
+		log.INFO.Printf("- AMQP: %s", cnf.AMQP.Exchange)
+		log.INFO.Printf("  - Exchange: %s", cnf.AMQP.Exchange)
+		log.INFO.Printf("  - ExchangeType: %s", cnf.AMQP.ExchangeType)
+		log.INFO.Printf("  - BindingKey: %s", cnf.AMQP.BindingKey)
+		log.INFO.Printf("  - PrefetchCount: %d", cnf.AMQP.PrefetchCount)
+	}
 
 	// 2. 启动消费任务的 goroutine
 	var signalWG sync.WaitGroup
