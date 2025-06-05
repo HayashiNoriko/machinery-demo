@@ -20,6 +20,7 @@ import (
 	backendsiface "demo/sourcecode/machinery/v2/backends/iface"
 	brokersiface "demo/sourcecode/machinery/v2/brokers/iface"
 	lockiface "demo/sourcecode/machinery/v2/locks/iface"
+
 	opentracing "github.com/opentracing/opentracing-go"
 )
 
@@ -342,6 +343,8 @@ func (server *Server) GetRegisteredTaskNames() []string {
 // RegisterPeriodicTask register a periodic task which will be triggered periodically
 func (server *Server) RegisterPeriodicTask(spec, name string, signature *tasks.Signature) error {
 	//check spec
+	// 解析标准的 cron 表达式（本例中为"*/1 * * * ?"）
+	// 返回的 schedule 对象可用于计算下一次执行时间
 	schedule, err := cron.ParseStandard(spec)
 	if err != nil {
 		return err
@@ -349,18 +352,28 @@ func (server *Server) RegisterPeriodicTask(spec, name string, signature *tasks.S
 
 	f := func() {
 		//get lock
+		// LockWithRetries 尝试获取分布式锁，确保同一时间只有一个 worker 能执行该周期性任务
+		// utils.GetLockName 生成锁名称，由任务名和 cron 表达式共同生成。唯一区分锁的标识
+		// schedule.Next 计算下一次的执行时间，作为锁的有效期。减 1 纳秒确保锁在任务执行前有效
 		err := server.lock.LockWithRetries(utils.GetLockName(name, spec), schedule.Next(time.Now()).UnixNano()-1)
 		if err != nil {
+			fmt.Println("。。。获取锁失败。。。")
 			return
 		}
 
 		//send task
+		// 发送任务到队列
+		// CopySignature 创建任务签名的副本，避免原始签名被修改影响后续执行
 		_, err = server.SendTask(tasks.CopySignature(signature))
 		if err != nil {
 			log.ERROR.Printf("periodic task failed. task name is: %s. error is %s", name, err.Error())
 		}
 	}
 
+	// 将函数添加到 cron 调度器中，按照给定的 spec 定期执行
+	// scheduler 是 Machinery 封装的 cron 实例
+	// AddFunc 是 cron 库的核心调度方法，第一个参数是 cron 表达式字符串，第二个参数是要执行的函数
+	// 返回的 cron.EntryID 可用于后续删除任务（这里没有用到）
 	_, err = server.scheduler.AddFunc(spec, f)
 	return err
 }
