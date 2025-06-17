@@ -102,6 +102,7 @@ func AnnotateSpanWithSignatureInfo(span opentracing.Span, signature *tasks.Signa
 }
 
 // AnnotateSpanWithChainInfo ...
+// 把同一个 span context 注入到 chain 里每个任务的 header（signature.Headers）中
 func AnnotateSpanWithChainInfo(span opentracing.Span, chain *tasks.Chain) {
 	// tag the span with some info about the chain
 	span.SetTag("chain.tasks.length", len(chain.Tasks))

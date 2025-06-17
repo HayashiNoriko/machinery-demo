@@ -206,9 +206,11 @@ func (server *Server) SendTask(signature *tasks.Signature) (*result.AsyncResult,
 
 // SendChainWithContext will inject the trace context in all the signature headers before publishing it
 func (server *Server) SendChainWithContext(ctx context.Context, chain *tasks.Chain) (*result.ChainAsyncResult, error) {
+	// 先从 ctx 创建一个新的 span（SendChain）
 	span, _ := opentracing.StartSpanFromContext(ctx, "SendChain", tracing.ProducerOption(), tracing.MachineryTag, tracing.WorkflowChainTag)
 	defer span.Finish()
 
+	// 把同一个 span context 注入到 chain 里每个任务的 header（signature.Headers）中
 	tracing.AnnotateSpanWithChainInfo(span, chain)
 
 	return server.SendChain(chain)
@@ -224,27 +226,39 @@ func (server *Server) SendChain(chain *tasks.Chain) (*result.ChainAsyncResult, e
 	return result.NewChainAsyncResult(chain.Tasks, server.backend), nil
 }
 
+// 批量并发发送一组任务（group）到消息队列，并在每个任务的 header 中注入分布式追踪（tracing）信息。
+// 支持设置并发度（sendConcurrency），控制同时发送任务的数量
 // SendGroupWithContext will inject the trace context in all the signature headers before publishing it
 func (server *Server) SendGroupWithContext(ctx context.Context, group *tasks.Group, sendConcurrency int) ([]*result.AsyncResult, error) {
+	// 1. 创建 tracing span
+	// 从传入的 ctx 创建一个新的 tracing span，名字为 "SendGroup"，并打上相关 tag
+	// 这个 span 代表本次 group 任务的“发送”操作
 	span, _ := opentracing.StartSpanFromContext(ctx, "SendGroup", tracing.ProducerOption(), tracing.MachineryTag, tracing.WorkflowGroupTag)
 	defer span.Finish()
 
+	// 2. 将 tracing span 注入到每个任务 header
+	// 这样 worker 消费任务时，可以继续 trace
 	tracing.AnnotateSpanWithGroupInfo(span, group, sendConcurrency)
 
+	// 3. 检查后端是否配置
 	// Make sure result backend is defined
 	if server.backend == nil {
 		return nil, errors.New("Result backend required")
 	}
 
+	// 4. 初始化返回值、WG、errorsChan
 	asyncResults := make([]*result.AsyncResult, len(group.Tasks))
 
 	var wg sync.WaitGroup
 	wg.Add(len(group.Tasks))
 	errorsChan := make(chan error, len(group.Tasks)*2)
 
+	// 5. 初始化 group 状态
+	// 在后端初始化 group 信息
 	// Init group
 	server.backend.InitGroup(group.GroupUUID, group.GetUUIDs())
 
+	// 6. 设置每个任务的初始状态为 PENDING
 	// Init the tasks Pending state first
 	for _, signature := range group.Tasks {
 		if err := server.backend.SetStatePending(signature); err != nil {
@@ -253,6 +267,7 @@ func (server *Server) SendGroupWithContext(ctx context.Context, group *tasks.Gro
 		}
 	}
 
+	// 7. 并发发送任务
 	pool := make(chan struct{}, sendConcurrency)
 	go func() {
 		for i := 0; i < sendConcurrency; i++ {
@@ -286,6 +301,7 @@ func (server *Server) SendGroupWithContext(ctx context.Context, group *tasks.Gro
 		}(signature, i)
 	}
 
+	// 8. 等待所有任务完成或有错误发生
 	done := make(chan int)
 	go func() {
 		wg.Wait()
