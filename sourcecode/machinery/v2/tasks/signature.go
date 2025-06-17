@@ -57,7 +57,7 @@ type Signature struct {
 	GroupTaskCount int          // 任务组内任务数量，配合 GroupUUID 使用，标记组内任务总数
 	Args           []Arg        // 任务参数，每个 Arg 表示一个参数，包含参数名、类型和值
 	Headers        Headers      // 任务头部信息
-	Priority       uint8        // 任务优先级，部分 broker 支持优先级队列
+	Priority       uint8        // 任务优先级，部分 broker 支持优先级队列（目前看来只有 amqp 支持）
 	Immutable      bool         // 是否不可变，如果为 true，任务参数不可被 worker 修改
 	RetryCount     int          // 任务重试次数，任务失败后最多重试的次数
 	RetryTimeout   int          // 任务重试间隔（单位秒），两次重试之间的等待时间
