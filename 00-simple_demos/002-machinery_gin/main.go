@@ -2,7 +2,7 @@
 package main
 
 import (
-	"demo/99-others/jobs"
+	"demo/00-simple_demos/jobs"
 	"demo/sourcecode/machinery/v2"
 	redisbackend "demo/sourcecode/machinery/v2/backends/redis"
 	redisbroker "demo/sourcecode/machinery/v2/brokers/redis"

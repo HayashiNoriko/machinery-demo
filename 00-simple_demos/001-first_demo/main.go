@@ -45,10 +45,13 @@ func TestAdd() {
 			},
 		},
 	}
-	asyncResult, _ := server.SendTask(signature)        // 任务可以通过将Signature的实例传递给Server实例来调用
-	results, _ := asyncResult.Get(time.Millisecond * 5) // 您还可以执行同步阻塞调用来等待任务结果
-	for _, result := range results {
-		fmt.Println(result.Interface())
+	asyncResult, _ := server.SendTask(signature) // 任务可以通过将Signature的实例传递给Server实例来调用
+	// results, _ := asyncResult.Get(time.Millisecond * 1) // 可以执行同步阻塞调用来等待任务结果
+
+	// 死循环，获取任务状态（PENDING、RECEIVED、STARTED、RETRY、SUCCESS、FAILURE 等)
+	for {
+		fmt.Println(asyncResult.GetState().State)
+		time.Sleep(1 * time.Second)
 	}
 }
 
@@ -64,13 +67,14 @@ func TestPeriodicTask() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	asyncResult, _ := server.SendTask(signature)
-	fmt.Println(asyncResult)
 }
 
 // 第一步：添加两个方法：Add、PeriodicTask
 func Add(args ...int64) (int64, error) {
 	fmt.Println("执行Add方法...")
+
+	time.Sleep(time.Second * 10) // 模拟耗时
+
 	sum := int64(0)
 	for _, arg := range args {
 		sum += arg
