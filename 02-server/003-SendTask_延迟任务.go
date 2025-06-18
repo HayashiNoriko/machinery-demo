@@ -8,7 +8,7 @@ import (
 	"demo/sourcecode/machinery/v2/tasks"
 )
 
-func main() {
+func main3() {
 	server := myutils.MyServer()
 
 	// 1. 创建任务签名

@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func main1() {
 	server := myutils.MyServer()
 
 	// 任务已经在 myutils.MyServer 中注册过了，以后就都不注册了
