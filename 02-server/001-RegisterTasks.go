@@ -16,11 +16,11 @@ func main1() {
 		"Periodic": myutils.Periodic,
 	})
 
-	// 获取所有任务名
+	// 1.获取所有任务名
 	names := server.GetRegisteredTaskNames()
 	fmt.Println(names)
 
-	// 根据任务名获取任务函数
+	// 2.根据任务名获取任务函数
 	// 获取到 interface{}
 	addFuncRaw, _ := server.GetRegisteredTask("Add")
 	// 断言为需要的类型
