@@ -1,0 +1,32 @@
+// 任务注册的相关方法
+// 只注册，不发布
+package main
+
+import (
+	myutils "demo/01-myutils"
+	"fmt"
+)
+
+func main1() {
+	server := myutils.MyServer()
+
+	// 注册任务
+	server.RegisterTasks(map[string]interface{}{
+		"Add":      myutils.Add,
+		"Periodic": myutils.Periodic,
+	})
+
+	// 获取所有任务名
+	names := server.GetRegisteredTaskNames()
+	fmt.Println(names)
+
+	// 根据任务名获取任务函数
+	// 获取到 interface{}
+	addFuncRaw, _ := server.GetRegisteredTask("Add")
+	// 断言为需要的类型
+	addFunc := addFuncRaw.(func(args ...int64) (int64, error))
+	// 调用
+	res, _ := addFunc(1, 2, 3, 4)
+	fmt.Println(res)
+
+}
