@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func main1() {
+func main() {
 	server := myutils.MyServer()
 
 	// 任务已经在 myutils.MyServer 中注册过了，以后就都不注册了
@@ -24,5 +24,10 @@ func main1() {
 	// 调用
 	res, _ := addFunc(1, 2, 3, 4)
 	fmt.Println(res)
+
+	// 3.检查某个任务名是否被注册到该 server 实例中
+	fmt.Println("Add", server.IsTaskRegistered("Add"))                     // true
+	fmt.Println("Periodic", server.IsTaskRegistered("Periodic"))           // true
+	fmt.Println("NotRegistered", server.IsTaskRegistered("NotRegistered")) // false
 
 }
