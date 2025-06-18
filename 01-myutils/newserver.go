@@ -31,6 +31,12 @@ func MyServer() *machinery.Server {
 
 	server := machinery.NewServer(cnf, broker, backend, lock)
 
+	// 注册任务
+	server.RegisterTasks(map[string]interface{}{
+		"Add":      Add,
+		"Periodic": Periodic,
+	})
+
 	return server
 
 }
