@@ -368,7 +368,7 @@ func (server *Server) RegisterPeriodicTask(spec, name string, signature *tasks.S
 
 	f := func() {
 		//get lock
-		// LockWithRetries 尝试获取分布式锁，确保同一时间只有一个 worker 能执行该周期性任务
+		// LockWithRetries 尝试获取分布式锁，确保同一时间只有一台 server 能发送该周期性任务
 		// utils.GetLockName 生成锁名称，由任务名和 cron 表达式共同生成。唯一区分锁的标识
 		// schedule.Next 计算下一次的执行时间，作为锁的有效期。减 1 纳秒确保锁在任务执行前有效
 		err := server.lock.LockWithRetries(utils.GetLockName(name, spec), schedule.Next(time.Now()).UnixNano()-1)
