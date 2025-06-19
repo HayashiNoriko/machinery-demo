@@ -11,7 +11,7 @@ import (
 func MyServer() *machinery.Server {
 	// 创建 config
 	cnf := &config.Config{
-		DefaultQueue:    "machinery_tasks",
+		DefaultQueue:    "my_default_tasks",
 		ResultsExpireIn: 3600,
 		Redis: &config.RedisConfig{
 			MaxIdle:                3,
@@ -21,6 +21,7 @@ func MyServer() *machinery.Server {
 			ConnectTimeout:         15,
 			NormalTasksPollPeriod:  1000,
 			DelayedTasksPollPeriod: 500,
+			DelayedTasksKey:        "my_delayed_queue",
 		},
 	}
 
