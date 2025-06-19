@@ -106,58 +106,73 @@ type SQSConfig struct {
 
 // RedisConfig ...
 type RedisConfig struct {
+	// 最大空闲连接数。即连接池中允许保持空闲状态的最大连接数
 	// Maximum number of idle connections in the pool.
 	// Default: 10
 	MaxIdle int `yaml:"max_idle" envconfig:"REDIS_MAX_IDLE"`
 
+	// 连接池中允许的最大连接数。如果为 0，则不限制连接数
 	// Maximum number of connections allocated by the pool at a given time.
 	// When zero, there is no limit on the number of connections in the pool.
 	// Default: 100
 	MaxActive int `yaml:"max_active" envconfig:"REDIS_MAX_ACTIVE"`
 
+	// 空闲连接的超时时间（秒）。超过该时间未被使用的连接会被关闭。如果为 0，则空闲连接不会被关闭
 	// Close connections after remaining idle for this duration in seconds. If the value
 	// is zero, then idle connections are not closed. Applications should set
 	// the timeout to a value less than the server's timeout.
 	// Default: 300
 	IdleTimeout int `yaml:"max_idle_timeout" envconfig:"REDIS_IDLE_TIMEOUT"`
 
+	// 当连接池已达到最大连接数时，是否等待有连接可用。为 true 时会等待，否则直接返回错误
 	// If Wait is true and the pool is at the MaxActive limit, then Get() waits
 	// for a connection to be returned to the pool before returning.
 	// Default: true
 	Wait bool `yaml:"wait" envconfig:"REDIS_WAIT"`
 
+	// 读取单条命令回复的超时时间（秒）
 	// ReadTimeout specifies the timeout in seconds for reading a single command reply.
 	// Default: 15
 	ReadTimeout int `yaml:"read_timeout" envconfig:"REDIS_READ_TIMEOUT"`
 
+	// 写入单条命令的超时时间（秒）
 	// WriteTimeout specifies the timeout in seconds for writing a single command.
 	// Default: 15
 	WriteTimeout int `yaml:"write_timeout" envconfig:"REDIS_WRITE_TIMEOUT"`
 
+	// 连接 Redis 服务器的超时时间（秒）
 	// ConnectTimeout specifies the timeout in seconds for connecting to the Redis server when
 	// no DialNetDial option is specified.
 	// Default: 15
 	ConnectTimeout int `yaml:"connect_timeout" envconfig:"REDIS_CONNECT_TIMEOUT"`
 
+	// 轮询普通任务的时间间隔（毫秒）
 	// NormalTasksPollPeriod specifies the period in milliseconds when polling redis for normal tasks
 	// Default: 1000
 	NormalTasksPollPeriod int `yaml:"normal_tasks_poll_period" envconfig:"REDIS_NORMAL_TASKS_POLL_PERIOD"`
 
+	// 轮询延迟任务的时间间隔（毫秒）
 	// DelayedTasksPollPeriod specifies the period in milliseconds when polling redis for delayed tasks
 	// Default: 20
-	DelayedTasksPollPeriod int    `yaml:"delayed_tasks_poll_period" envconfig:"REDIS_DELAYED_TASKS_POLL_PERIOD"`
-	DelayedTasksKey        string `yaml:"delayed_tasks_key" envconfig:"REDIS_DELAYED_TASKS_KEY"`
+	DelayedTasksPollPeriod int `yaml:"delayed_tasks_poll_period" envconfig:"REDIS_DELAYED_TASKS_POLL_PERIOD"`
 
+	// 延迟任务队列名
+	DelayedTasksKey string `yaml:"delayed_tasks_key" envconfig:"REDIS_DELAYED_TASKS_KEY"`
+
+	// 连接 Redis 时设置的客户端名称
 	// ClientName specifies the redis client name to be set when connecting to the Redis server
 	ClientName string `yaml:"client_name" envconfig:"REDIS_CLIENT_NAME"`
 
+	// 使用 Sentinel 模式时，指定 Redis 主节点名称
 	// MasterName specifies a redis master name in order to configure a sentinel-backed redis FailoverClient
 	MasterName string `yaml:"master_name" envconfig:"REDIS_MASTER_NAME"`
 
+	// 是否启用 Redis 集群模式。即使只有一个节点，也可以开启集群模式，适用于 AWS 等云服务
 	// ClusterEnabled specifies whether cluster mode is enabled, regardless the number of addresses.
 	// This helps create ClusterClient for Redis servers that enabled cluster mode with 1 node, or using AWS configuration endpoint
 	ClusterEnabled bool `yaml:"cluster_enabled" envconfig:"REDIS_CLUSTER_ENABLED"`
 
+	// 通过 Sentinel 连接 Redis 时使用的密码
 	// SentinelPassword specifies the password to be used when connecting to a Redis server via Sentinel
 	SentinelPassword string `yaml:"sentinel_password" envconfig:"REDIS_SENTINEL_PASSWORD"`
 }
