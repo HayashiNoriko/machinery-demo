@@ -1,11 +1,11 @@
 package main
 
 import (
-	myutils "demo/01-myutils"
+// myutils "demo/01-myutils"
 )
 
 func main66666() {
-	server := myutils.MyServer()
+	// server := myutils.MyServer()
 
 	select {}
 }
