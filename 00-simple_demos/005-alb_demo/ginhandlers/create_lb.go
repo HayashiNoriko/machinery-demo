@@ -51,7 +51,7 @@ func CreateLoadBalancer(c *gin.Context) {
 	}
 
 	// 3. 更新 Task 和 Lb 表
-	go CreateLoadBalancerTask(asyncResult, userId, lbId)
+	go CreateLoadBalancerTask(asyncResult, lbId)
 
 	// 4. 返回 lbId
 	c.JSON(200, gin.H{
@@ -63,10 +63,10 @@ func CreateLoadBalancer(c *gin.Context) {
 
 // 阻塞等待 asyncResult 完成后，更新 Task 表
 // 添加一行新记录（把 redis 中的记录迁移到 mysql 中）
-func CreateLoadBalancerTask(asyncResult *result.AsyncResult, userId, lbId string) {
+func CreateLoadBalancerTask(asyncResult *result.AsyncResult, lbId string) {
 
 	// 插入一行 Task 记录
-	insertTask(asyncResult, userId)
+	insertTask(asyncResult)
 
 	// 更新 Lb 行，因为 CreateLoadBalancer 可能意外失败、突然返回，因此需要在外部确保 Lb 行的 LbState 是正确的
 	// 如果是 SUCCESS，那么 Lb 表中的状态是正确的（在 CreateLoadBalancer 中已经被正确写入了），就不需要修改

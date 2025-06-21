@@ -53,7 +53,7 @@ func DeleteLoadBalancer(c *gin.Context) {
 	}
 
 	// 3. 更新 Task 表
-	go DeleteLoadBalancerTask(asyncResult, userId)
+	go DeleteLoadBalancerTask(asyncResult)
 
 	// 4. 返回 taskId
 	taskId := asyncResult.Signature.UUID
@@ -64,7 +64,7 @@ func DeleteLoadBalancer(c *gin.Context) {
 }
 
 // 将 redis backend 的这条记录迁移到 mysql 中
-func DeleteLoadBalancerTask(asyncResult *result.AsyncResult, userId string) {
+func DeleteLoadBalancerTask(asyncResult *result.AsyncResult) {
 	// 插入一行 Task 记录
-	insertTask(asyncResult, userId)
+	insertTask(asyncResult)
 }

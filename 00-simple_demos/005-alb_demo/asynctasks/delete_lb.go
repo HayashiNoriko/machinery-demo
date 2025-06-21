@@ -18,15 +18,16 @@ func DeleteLoadBalancer(userId string, lbId string) error {
 		return fmt.Errorf("lb_id %s not found", lbId)
 	}
 
-	// 模拟删除实例耗时
-	fmt.Println("删除实例中...")
+	// 模拟停止实例耗时
+	fmt.Println("停止实例中...")
+	time.Sleep(time.Second * 5)
 
 	// 先把状态改为 InActive
-	time.Sleep(time.Second * 5)
 	lb.LbState = "InActive"
 	db.Save(&lb)
 
-	// 删除这行记录
+	// 模拟删除实例耗时
+	fmt.Println("删除实例中...")
 	time.Sleep(time.Second * 5)
 	db.Delete(&lb)
 
