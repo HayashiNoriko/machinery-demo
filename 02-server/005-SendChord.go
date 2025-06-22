@@ -8,7 +8,7 @@ import (
 	"demo/sourcecode/machinery/v2/tasks"
 )
 
-func main() {
+func main5() {
 	server := myutils.MyServer()
 
 	// 1. 创建10个任务签名
