@@ -1,4 +1,4 @@
-// 发送任务组
+// 发送和弦任务
 package main
 
 import (
