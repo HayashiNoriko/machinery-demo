@@ -36,6 +36,7 @@ func MyServer() *machinery.Server {
 	server.RegisterTasks(map[string]interface{}{
 		"Add":      Add,
 		"Periodic": Periodic,
+		"Print":    Print,
 	})
 
 	return server

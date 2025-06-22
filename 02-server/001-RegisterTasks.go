@@ -10,7 +10,11 @@ import (
 func main1() {
 	server := myutils.MyServer()
 
-	// 任务已经在 myutils.MyServer 中注册过了，以后就都不注册了
+	// 任务注册
+	server.RegisterTasks(map[string]interface{}{
+		"Add":      myutils.Add,
+		"Periodic": myutils.Periodic,
+	})
 
 	// 1.获取所有任务名
 	names := server.GetRegisteredTaskNames()

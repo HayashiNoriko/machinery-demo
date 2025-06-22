@@ -2,6 +2,7 @@ package myutils
 
 import (
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -21,5 +22,17 @@ func Periodic() error {
 	fmt.Println("---执行某个周期性任务---")
 	time.Sleep(1 * time.Second)
 	fmt.Println("===周期性任务执行结束===")
+	return nil
+}
+
+// 定义一个打印任务
+func Print(msg string) error {
+	file, _ := os.OpenFile("output.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	defer file.Close()
+
+	file.WriteString(msg + "\n")
+
+	time.Sleep(1 * time.Second)
+
 	return nil
 }
