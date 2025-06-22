@@ -19,9 +19,21 @@ func Init(mserver_ *machinery.Server, db_ *gorm.DB) {
 	db = db_
 }
 
-func insertTask(asyncResult *result.AsyncResult) {
-	// 阻塞，从 asyncResult 中获取结果（等待异步任务完成）
-	res, err := asyncResult.Get(time.Second)
+func insertTask(asyncResult *result.AsyncResult) error {
+	// 定时阻塞，从 backend 中获取结果（等待异步任务完成）
+	// 具体的超时时间（第一个参数），需要谨慎设置
+	res, err := asyncResult.GetWithTimeout(time.Hour, time.Second)
+
+	// GetWithTimeout 返回错误，有两种情况
+	// 一种是 ErrTimeoutReached，超时了（第一个参数设置的值）
+	// 另一种是任务 FAILURE 了（第二个参数设置的值），err 保存任务的错误信息
+	if err == result.ErrTimeoutReached {
+		// 如果是超时，那么可以检查一下任务状态
+		// _, err := mserver.GetBackend().GetState(asyncResult.Signature.UUID)
+		// 在真实的业务场景下，需要根据不同的 err 处理不同的情况（backend 的 rclient 出错、json 反序列化出错。。。等等等等）
+		// 模拟 demo 中就不再详细判断了
+		return err
+	}
 
 	// []reflect.Value ---> []interface{}
 	results := make([]interface{}, len(res))
@@ -45,4 +57,6 @@ func insertTask(asyncResult *result.AsyncResult) {
 
 	// 添加这个 Task 行
 	db.Create(&task)
+
+	return nil
 }

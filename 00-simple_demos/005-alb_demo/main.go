@@ -10,6 +10,7 @@ import (
 	redisbroker "demo/sourcecode/machinery/v2/brokers/redis"
 	"demo/sourcecode/machinery/v2/config"
 	redislock "demo/sourcecode/machinery/v2/locks/redis"
+	// "demo/sourcecode/machinery/v2/tasks"
 
 	"github.com/gin-gonic/gin"
 
@@ -20,6 +21,7 @@ import (
 var (
 	db      *gorm.DB          // gorm 数据库连接实例
 	mserver *machinery.Server // machinery 服务器实例
+	// lock    redislock.Lock
 )
 
 func main() {
@@ -34,12 +36,14 @@ func main() {
 
 	// 4. 启动 machinery 的消费者 Worker
 	worker := mserver.NewWorker("myworker", 10)
+	// worker.SetPreTaskHandler(func(signature *tasks.Signature) {
+	// 	lock.Lock("lockkey", 100000000)
+	// })
 	worker.Launch()
 }
 
 func initDB() {
-	dsn := "root:123456@tcp(127.0.0.1:3306)/testdb?charset=utf8mb4&parseTime=True&loc=Local"
-	// navicat 密码：Root123456!
+	dsn := "root:Root123456!@tcp(127.0.0.1:3306)/testdb?charset=utf8mb4&parseTime=True&loc=Local"
 	var err error
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

@@ -66,12 +66,12 @@ func CreateLoadBalancer(c *gin.Context) {
 func CreateLoadBalancerTask(asyncResult *result.AsyncResult, lbId string) {
 
 	// 插入一行 Task 记录
-	insertTask(asyncResult)
+	err := insertTask(asyncResult)
 
 	// 更新 Lb 行，因为 CreateLoadBalancer 可能意外失败、突然返回，因此需要在外部确保 Lb 行的 LbState 是正确的
 	// 如果是 SUCCESS，那么 Lb 表中的状态是正确的（在 CreateLoadBalancer 中已经被正确写入了），就不需要修改
 	// 兜底
-	if asyncResult.GetState().State == "FAILURE" {
+	if err != nil || asyncResult.GetState().State == "FAILURE" {
 		db.Model(&tables.Lb{}).Where("lb_id = ?", lbId).Update("LbState", "CreateFailed")
 	}
 
