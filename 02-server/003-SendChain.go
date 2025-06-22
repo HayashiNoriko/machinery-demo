@@ -8,7 +8,7 @@ import (
 	"demo/sourcecode/machinery/v2/tasks"
 )
 
-func main() {
+func main3() {
 	server := myutils.MyServer()
 
 	// 1. 创建10个任务签名
@@ -17,6 +17,10 @@ func main() {
 		signatures[i] = &tasks.Signature{
 			Name: "Print",
 			Args: []tasks.Arg{
+				{
+					Type:  "string",
+					Value: "output_chain.txt",
+				},
 				{
 					Type:  "string",
 					Value: fmt.Sprintf("hello world %d", i),

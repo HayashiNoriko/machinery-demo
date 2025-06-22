@@ -26,8 +26,8 @@ func Periodic() error {
 }
 
 // 定义一个打印任务
-func Print(msg string) error {
-	file, _ := os.OpenFile("output.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+func Print(filename, msg string) error {
+	file, _ := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	defer file.Close()
 
 	file.WriteString(msg + "\n")
