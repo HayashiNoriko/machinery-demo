@@ -30,7 +30,7 @@ func Print(filename, msg string) error {
 	file, _ := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	defer file.Close()
 
-	file.WriteString(msg + "\n")
+	file.WriteString(msg + " " + time.Now().Format("2006-01-02 15:04:05") + "\n")
 
 	time.Sleep(1 * time.Second)
 
