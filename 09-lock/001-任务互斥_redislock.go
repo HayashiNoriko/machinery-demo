@@ -11,6 +11,10 @@
 // 或者就用 redis 的 redsync，这是另一个方法
 
 // 本例使用 machinery 的 lock 来实现任务互斥
+// 可惜这个 lock 本意是用来发送周期任务的
+// 没有 Unlock 方法，所以只能通过控制锁的过期时间、来控制锁的生命周期
+// 但是锁一旦创建，就只能等锁过期了，不能手动 Unlock
+// 因此没有 redsync 那么灵活（既可以设置过期时间、又可以手动 Unlock）
 
 package main
 
@@ -30,7 +34,6 @@ var lock redislock.Lock
 // 互斥任务
 func OnlyOne() error {
 	// 1. 获取锁
-	// 这个任务每三秒只能执行一次
 	// 注意第二个参数（锁的过期时间）是指未来某时刻的绝对时间戳，而不是一段时长，需要用 time.Now().Add()
 	err := lock.Lock("OnlyOne", time.Now().Add(3*time.Second).UnixNano())
 	if err != nil {
@@ -42,7 +45,7 @@ func OnlyOne() error {
 
 	return nil
 }
-func main() {
+func main1() {
 	server := myutils.MyServer()
 
 	// 1. 初始化 lock
