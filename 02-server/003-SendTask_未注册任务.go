@@ -9,7 +9,7 @@ import (
 	"demo/sourcecode/machinery/v2/tasks"
 )
 
-func main() {
+func main3() {
 	server := myutils.MyServer()
 
 	// 1.发布一个未注册的任务
