@@ -1,4 +1,4 @@
-// 发送链式任务
+// 发送任务组
 package main
 
 import (
@@ -8,7 +8,7 @@ import (
 	"demo/sourcecode/machinery/v2/tasks"
 )
 
-func main3() {
+func main5() {
 	server := myutils.MyServer()
 
 	// 1. 创建10个任务签名
@@ -19,7 +19,7 @@ func main3() {
 			Args: []tasks.Arg{
 				{
 					Type:  "string",
-					Value: "output_chain.txt",
+					Value: "output_group.txt",
 				},
 				{
 					Type:  "string",
@@ -29,15 +29,15 @@ func main3() {
 		}
 	}
 
-	// 2. 创建一个 Chain
-	chain, err := tasks.NewChain(signatures...)
+	// 2. 创建一个 Group
+	group, err := tasks.NewGroup(signatures...)
 	if err != nil {
-		fmt.Println("创建 Chain 失败", err)
+		fmt.Println("创建 Group 失败", err)
 		return
 	}
 
-	// 3. 发送 Chain
-	server.SendChain(chain)
+	// 3. 发送 Group
+	server.SendGroup(group, 10)
 
 	// 4. 创建一个 worker 去执行任务
 	worker := server.NewWorker("myworker", 10)
