@@ -6,7 +6,7 @@ import (
 	"demo/sourcecode/machinery/v2/tasks"
 )
 
-func main() {
+func main8() {
 	server := myutils.MyServer()
 
 	// 1. 注册周期任务，传入一个空任务（懒得新建 signature 了）
