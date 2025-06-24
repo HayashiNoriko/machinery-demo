@@ -23,7 +23,7 @@ func OnSuc(msg, msgFromMain string) error {
 	return nil
 }
 
-func main() {
+func main6() {
 	server := myutils.MyServer()
 
 	// 1. 注册任务
