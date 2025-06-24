@@ -1,6 +1,6 @@
 // 任务的成功回调
 // OnSuccess 是一个切片，所以可以同时执行多个成功回调，执行的顺序不可控
-// 主任务成功后，主任务的返回值（不包含必须传入的 err）会作为参数传入给 OnSuccess 中的 signature.Args 的最后面
+// 主任务成功后，主任务的返回值（除 err 外）会作为参数，append 到 OnSuccess 中每个 signature.Args 的最后面
 
 package main
 
