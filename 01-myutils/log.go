@@ -8,6 +8,27 @@ import (
 	"time"
 )
 
+// 生成日志文件名及路径
+func GetLogPath() string {
+	// 1. 获取调用者的文件路径
+	_, file, _, ok := runtime.Caller(1)
+	if !ok {
+		file = "unknown"
+	}
+
+	// 2. 取 go 文件名（不带路径和扩展名）
+	base := filepath.Base(file)
+	name := strings.TrimSuffix(base, filepath.Ext(base))
+
+	// 3. 日志文件名
+	logFile := "output_" + name
+
+	// 4. 日志文件路径（和 go 文件同目录）
+	logPath := filepath.Join(filepath.Dir(file), logFile)
+
+	return logPath
+}
+
 // 将输出写入文件（终端太多 DEBUG）
 func Log(msg string) {
 	// 1. 获取调用者的文件路径
