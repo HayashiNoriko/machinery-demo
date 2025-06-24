@@ -9,7 +9,7 @@ import (
 )
 
 // 将输出写入文件（终端太多 DEBUG）
-func Output(msg string) {
+func Log(msg string) {
 	// 1. 获取调用者的文件路径
 	_, file, _, ok := runtime.Caller(1)
 	if !ok {

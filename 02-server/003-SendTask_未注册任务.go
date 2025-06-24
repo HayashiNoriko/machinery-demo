@@ -21,11 +21,11 @@ func main3() {
 	asyncResult, err := server.SendTask(signature)
 	go func(asyncResult *result.AsyncResult, err error) {
 		if err != nil {
-			myutils.Output(err.Error())
+			myutils.Log(err.Error())
 		}
 		for {
 			asyncResult.GetWithTimeout(2*time.Second, 500*time.Millisecond)
-			myutils.Output("asyncResult.GetWithTimeout中、、、")
+			myutils.Log("asyncResult.GetWithTimeout中、、、")
 		}
 
 	}(asyncResult, err)
