@@ -1,0 +1,11 @@
+主任务执行 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 0 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 1 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 2 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 3 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 4 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 5 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 6 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 8 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 9 号回调函数 2025-06-24 12:51:36
+失败回调执行, errStringFromMain: 某个错误,  msg: 我是 7 号回调函数 2025-06-24 12:51:36
