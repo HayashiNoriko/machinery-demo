@@ -1,5 +1,5 @@
 // 发送套娃任务，用 Jaeger 观察 tracing
-// 使用 SendTaskWithContext，而非 SendTask
+// 套娃任务内部需要使用 SendTaskWithContext，而非 SendTask
 
 package main
 
