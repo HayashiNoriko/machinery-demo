@@ -80,10 +80,14 @@ func (worker *Worker) LaunchAsync(errorsChan chan<- error) {
 	go func() {
 		// 2.1. 循环调用 broker 的 StartConsuming 方法，启动任务消费
 		for {
+			// 正常情况下 StartConsuming 会一直阻塞，这代表 machinery 的正常运转
 			retry, err := broker.StartConsuming(worker.ConsumerTag, worker.Concurrency, worker)
 
+			// StartConsuming 一旦退出，那么只有两种情况：
+			// 1. 外部令其退出（worker.Quit），retry 被设置为 false，不允许重试，本循环退出
+			// 2. 内部 machinery 发生错误，retry 可能为 true，也可能为 false，true 的话表示可以重试，本循环继续
 			if retry {
-				// 2.2. 如果 retry 为 true，说明消费过程中发生了可重试的错误，会调用 errorHandler 或打印日志，然后继续重试
+				// 2.2. 如果 retry 为 true，允许重试，会调用 errorHandler 或打印日志，然后继续重试
 				if worker.errorHandler != nil {
 					worker.errorHandler(err)
 				} else {

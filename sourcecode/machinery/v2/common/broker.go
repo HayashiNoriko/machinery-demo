@@ -20,7 +20,7 @@ type registeredTaskNames struct {
 type Broker struct {
 	cnf                 *config.Config
 	registeredTaskNames registeredTaskNames
-	retry               bool           // 是否启用重试机制。为 true 时，broker 会在消费消息失败时尝试重试
+	retry               bool           // 是否启用重试机制。为 true 时，broker 会在消费消息失败（machinery 框架本身出错，而非任务执行正常出错）时尝试重试
 	retryFunc           func(chan int) // 重试逻辑的函数指针，负责实现具体的重试行为。参数为一个通道，用于接收停止信号
 	retryStopChan       chan int       // 通知重试逻辑停止的通道。当需要停止重试时（如关闭 broker），会向该通道发送信号
 	stopChan            chan int       // 通知 broker 停止消费消息的通道。关闭该通道后，消费协程会收到通知并停止工作

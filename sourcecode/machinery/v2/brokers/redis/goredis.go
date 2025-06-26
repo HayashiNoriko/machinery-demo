@@ -327,6 +327,7 @@ func (b *BrokerGR) consume(deliveries <-chan []byte, concurrency int, taskProces
 			return err
 		case d, open := <-deliveries:
 			// 如果 deliveries channel 关闭，返回 nil 结束消费
+			// 不执行新的 consumeOne、不再发起新的 goroutine、不增加新的 processingWG 计数
 			if !open {
 				return nil
 			}
