@@ -6,6 +6,10 @@ import (
 	redisbroker "demo/sourcecode/machinery/v2/brokers/redis"
 	"demo/sourcecode/machinery/v2/config"
 	redislock "demo/sourcecode/machinery/v2/locks/redis"
+
+	eagerbackend "demo/sourcecode/machinery/v2/backends/eager"
+	eagerbroker "demo/sourcecode/machinery/v2/brokers/eager"
+	eagerlock "demo/sourcecode/machinery/v2/locks/eager"
 )
 
 func MyServer() *machinery.Server {
@@ -41,4 +45,27 @@ func MyServer() *machinery.Server {
 
 	return server
 
+}
+
+func MyEagerServer() *machinery.Server {
+	// 创建 config
+	cnf := &config.Config{
+		DefaultQueue: "my_default_tasks",
+	}
+
+	// 创建服务器实例
+	broker := eagerbroker.New()
+	backend := eagerbackend.New()
+	lock := eagerlock.New()
+
+	server := machinery.NewServer(cnf, broker, backend, lock)
+
+	// 注册任务
+	server.RegisterTasks(map[string]interface{}{
+		"Add":      Add,
+		"Periodic": Periodic,
+		"Print":    Print,
+	})
+
+	return server
 }
