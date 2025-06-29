@@ -10,7 +10,7 @@ import (
 	redisbroker "demo/sourcecode/machinery/v2/brokers/redis"
 	"demo/sourcecode/machinery/v2/config"
 	redislock "demo/sourcecode/machinery/v2/locks/redis"
-	// "demo/sourcecode/machinery/v2/tasks"
+	"demo/sourcecode/machinery/v2/tasks"
 
 	"github.com/gin-gonic/gin"
 
@@ -21,7 +21,7 @@ import (
 var (
 	db      *gorm.DB          // gorm 数据库连接实例
 	mserver *machinery.Server // machinery 服务器实例
-	// lock    redislock.Lock
+	worker  *machinery.Worker // machinery 消费者实例
 )
 
 func main() {
@@ -29,16 +29,15 @@ func main() {
 	initDB()
 
 	// 2. 创建 machinery 服务器实例
-	initMachinery()
+	initMachineryServer()
+
+	// 3. 创建 machinery 消费者实例
+	initMachineryWorker()
 
 	// 3. 启动 gin 服务器
 	go initGin()
 
 	// 4. 启动 machinery 的消费者 Worker
-	worker := mserver.NewWorker("myworker", 10)
-	// worker.SetPreTaskHandler(func(signature *tasks.Signature) {
-	// 	lock.Lock("lockkey", 100000000)
-	// })
 	worker.Launch()
 }
 
@@ -53,7 +52,7 @@ func initDB() {
 	db.AutoMigrate(&tables.Task{})
 }
 
-func initMachinery() {
+func initMachineryServer() {
 	asynctasks.Init(db)
 
 	cnf := &config.Config{
@@ -81,6 +80,61 @@ func initMachinery() {
 		"CreateLoadBalancer": asynctasks.CreateLoadBalancer,
 		"DeleteLoadBalancer": asynctasks.DeleteLoadBalancer,
 	})
+
+	// 设置 server 任务发布前钩子，在 SendTask 中，生成 UUID 之后、Publish 之前，将任务状态信息存入数据库
+	mserver.SetPreTaskHandler(func(signature *tasks.Signature) {
+		task := tables.Task{
+			TaskId:   signature.UUID,
+			TaskName: signature.Name,
+			State:    "未执行",
+			Results:  nil,
+			Err:      "",
+		}
+
+		// 添加这个 Task 行
+		db.Create(&task)
+	})
+}
+
+func initMachineryWorker() {
+	worker = mserver.NewWorker("myworker", 10)
+
+	// 设置任务执行前钩子，将任务状态信息更新为“执行中”
+	worker.SetPreTaskHandler(func(signature *tasks.Signature) {
+		result := db.Model(&tables.Task{}).Where("task_id = ?", signature.UUID).Update("State", "执行中")
+		if result.Error != nil {
+			// 处理 gorm 修改数据表失败的情况...
+			panic(result.Error)
+		}
+	})
+
+	// 设置任务执行后钩子，将任务状态信息更新为“执行成功”/“执行失败”，或者不变（RETRY 的特殊情况）
+	worker.SetPostTaskHandler(func(signature *tasks.Signature) {
+		taskState, err := mserver.GetBackend().GetState(signature.UUID)
+		if err != nil {
+			// 处理 backend 获取任务状态失败的情况...
+			panic(err)
+		}
+
+		// 更新任务状态
+		if taskState.IsSuccess() {
+			result := db.Model(&tables.Task{}).Where("task_id = ?", signature.UUID).Update("State", "执行成功")
+			if result.Error != nil {
+				// 处理修改数据表失败的情况...
+				panic(result.Error)
+			}
+		}
+		if taskState.IsFailure() {
+			result := db.Model(&tables.Task{}).Where("task_id = ?", signature.UUID).Update("State", "执行失败")
+			if result.Error != nil {
+				// 处理修改数据表失败的情况...
+				panic(result.Error)
+			}
+		}
+
+		// 如果既不是 SUCCESS、又不是 FAILURE，那么就只能是 RETRY，RETRY 视为“执行中”，则无需修改
+	})
+
 }
 
 func initGin() {

@@ -1,7 +1,6 @@
 package ginhandlers
 
 import (
-	"demo/sourcecode/machinery/v2/backends/result"
 	"demo/sourcecode/machinery/v2/tasks"
 	"fmt"
 
@@ -42,8 +41,7 @@ func DeleteLoadBalancer(c *gin.Context) {
 		},
 	}
 
-	// 3. 得到 asyncResult
-	asyncResult, err := mserver.SendTask(signature)
+	_, err := mserver.SendTask(signature)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(500, gin.H{
@@ -52,19 +50,10 @@ func DeleteLoadBalancer(c *gin.Context) {
 		return
 	}
 
-	// 3. 更新 Task 表
-	go DeleteLoadBalancerTask(asyncResult)
-
-	// 4. 返回 taskId
-	taskId := asyncResult.Signature.UUID
+	// 3. 返回 taskId
+	taskId := signature.UUID
 	c.JSON(200, gin.H{
 		"message": "ok",
 		"taskId":  taskId,
 	})
-}
-
-// 将 redis backend 的这条记录迁移到 mysql 中
-func DeleteLoadBalancerTask(asyncResult *result.AsyncResult) {
-	// 插入一行 Task 记录
-	insertTask(asyncResult)
 }
