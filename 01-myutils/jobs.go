@@ -13,6 +13,7 @@ func Add(args ...int64) (int64, error) {
 	for _, arg := range args {
 		sum += arg
 	}
+	time.Sleep(1 * time.Second)
 	fmt.Println("===Add 方法执行结束===")
 	return sum, nil
 }
