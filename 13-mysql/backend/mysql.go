@@ -1,8 +1,9 @@
 // 自己实现的 MySQL 版本的 backend
 
 // 注意：
-// 1、过期自动清理：mysql 本身不能像 redis 一样直接给某条记录设置过期时间，只能结合 created_at 和 ttl 字段来判断某条记录是否过期
-// 因此需要在插入时就指定这两个字段，以及我们手动定时执行清理的 SQL：
+// 1、过期自动清理（本文没有实现，实现思路如下）：
+// mysql 本身不能像 redis 一样直接给某条记录设置过期时间，只能结合 created_at 和 ttl 字段来判断某条记录是否过期
+// 因此需要在插入时就指定 created_at 和 ttl 这两个字段，以及我们定时执行一个自动清理的 SQL：
 // DELETE FROM group_meta WHERE ttl IS NOT NULL AND created_at < NOW() - INTERVAL ttl SECOND;
 
 // 2、json 反序列化：依然用 json.Decoder，和源码保持一致；不要用 json.Unmarshal，因为解析出来的数值会被默认转换成 float64，导致反射类型转换失败
