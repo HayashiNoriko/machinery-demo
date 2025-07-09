@@ -31,7 +31,7 @@ import (
 // BackendMS 表示一个用 MySQL 做后端的 backend 实例
 type BackendMS struct {
 	common.Backend         // Backend 基类
-	db             *sql.DB // gorm 实例，用于与 MySQL 交互
+	db             *sql.DB // sql.DB 实例，用于与 MySQL 交互
 }
 
 // addr = root:Root123456!@tcp(127.0.0.1:3306)
