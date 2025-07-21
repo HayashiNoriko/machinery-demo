@@ -1,0 +1,70 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="27.1.6">
+  <diagram name="第 1 页" id="cSblw65JKhau9ju3RnS3">
+    <mxGraphModel dx="673" dy="1603" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-1" value="&lt;b&gt;Lb&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="-30" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-2" value="LbId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-1">
+          <mxGeometry y="20" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-3" value="UserId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-1">
+          <mxGeometry y="40" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-4" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;b&gt;LbState&lt;/b&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontColor=#CC0000;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-1">
+          <mxGeometry y="60" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-5" value="&lt;b&gt;Task&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=20;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="380" y="100" width="70" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-6" value="TaskId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-5">
+          <mxGeometry y="20" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-7" value="TaskName" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-5">
+          <mxGeometry y="40" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-8" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;b&gt;TaskState&lt;/b&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-5">
+          <mxGeometry y="60" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-9" value="Result" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-5">
+          <mxGeometry y="80" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-10" value="Err" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="K0k8mbGBcaMyKbQInMUu-5">
+          <mxGeometry y="100" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-13" value="" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=south;position2=0.8;size=20;position=0.5;base=20;" vertex="1" parent="1">
+          <mxGeometry x="433" y="-40" width="170" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-12" value="&lt;font&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));&quot;&gt;&lt;b style=&quot;&quot;&gt;Inactive&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(已停止)&lt;/font&gt;&lt;/font&gt;&lt;div&gt;&lt;font&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));&quot;&gt;&lt;b&gt;Active&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(运行中)&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));&quot;&gt;&lt;b&gt;Provisioning&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(创建中)&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));&quot;&gt;&lt;b&gt;Configuring&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(变配中)&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 0), rgb(237, 237, 237));&quot;&gt;&lt;b&gt;CreateFailed&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(创建失败)&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="463" y="-35" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-14" value="" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=south;position2=0.2;size=20;position=0.3;" vertex="1" parent="1">
+          <mxGeometry x="440" y="160" width="90" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-15" value="&lt;font style=&quot;color: rgb(255, 128, 0);&quot;&gt;&lt;b&gt;未执行&lt;/b&gt;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: rgb(51, 153, 255);&quot;&gt;&lt;b&gt;执行中&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: rgb(0, 204, 0);&quot;&gt;&lt;b style=&quot;&quot;&gt;执行成功&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot; color=&quot;#cc0000&quot;&gt;&lt;b&gt;执行失败&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="470" y="165" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-16" value="Backend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="700" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-17" value="Machinery" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="720" y="100" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-19" value="" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=south;position2=0.2;size=20;position=0.3;flipH=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="150" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-18" value="&lt;font style=&quot;color: rgb(255, 128, 0);&quot;&gt;&lt;b&gt;PENDING&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: rgb(128, 128, 128);&quot;&gt;(排队中)&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 153, 255);&quot;&gt;&lt;b&gt;RECEIVED&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: rgb(128, 128, 128);&quot;&gt;(已接收)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(51, 153, 255);&quot;&gt;&lt;b&gt;STARTED&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: rgb(128, 128, 128);&quot;&gt;(已开始)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;font style=&quot;color: rgb(51, 153, 255);&quot;&gt;&lt;b&gt;RETRY&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(重试中)&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;font style=&quot;color: rgb(0, 204, 0);&quot;&gt;&lt;b style=&quot;&quot;&gt;SUCCESS&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(执行成功)&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;font color=&quot;#cc0000&quot;&gt;&lt;b&gt;FAILURE&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;color: rgb(128, 128, 128);&quot;&gt;(执行失败)&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="565" y="155" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="K0k8mbGBcaMyKbQInMUu-26" value="" style="endArrow=none;html=1;rounded=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="80" as="sourcePoint" />
+            <mxPoint x="820" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
