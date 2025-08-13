@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime/debug"
+	"strings"
 
 	opentracing "github.com/opentracing/opentracing-go"
 	opentracing_ext "github.com/opentracing/opentracing-go/ext"
@@ -213,6 +214,10 @@ func (t *Task) Call() (taskResults []*TaskResult, err error) {
 	for i := 0; i < len(results)-1; i++ {
 		val := results[i].Interface()
 		typeStr := reflect.TypeOf(val).String()
+		// 去掉包名（自定义类型时，类型会带上包名，例如 main.Person）
+		if len(strings.Split(typeStr, ".")) == 2 {
+			typeStr = strings.Split(typeStr, ".")[1]
+		}
 		taskResults[i] = &TaskResult{
 			Type:  typeStr,
 			Value: val,

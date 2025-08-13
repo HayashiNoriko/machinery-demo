@@ -68,6 +68,11 @@ func (e ErrUnsupportedType) Error() string {
 	return fmt.Sprintf("%v is not one of supported types", e.valueType)
 }
 
+// 增加新的类型
+func RegisterType(valueType string, value interface{}) {
+	typesMap[valueType] = reflect.TypeOf(value)
+}
+
 // 将任意类型的参数（通常是从 JSON 或任务参数中反序列化出来的）转换为 Go 的 reflect.Value，以便后续通过反射调用任务函数
 // ReflectValue converts interface{} to reflect.Value based on string type
 func ReflectValue(valueType string, value interface{}) (reflect.Value, error) {
@@ -146,7 +151,40 @@ func reflectValue(valueType string, value interface{}) (reflect.Value, error) {
 		return theValue.Elem(), nil
 	}
 
-	return reflect.Value{}, NewErrUnsupportedType(valueType)
+	// 处理自定义类型的切片
+	// Handle slices of custom types
+	res, err := handleCustomType(theType, value)
+	if err != nil {
+		return reflect.Value{}, NewErrUnsupportedType(valueType)
+	}
+
+	return res, err
+}
+
+// handleCustomType 处理自定义类型的转换
+// handleCustomType handles conversion for custom types using JSON marshaling/unmarshaling
+func handleCustomType(theType reflect.Type, value interface{}) (reflect.Value, error) {
+	// 创建目标类型的新实例
+	theValue := reflect.New(theType)
+
+	// 如果 value 已经是目标类型，直接返回
+	if reflect.TypeOf(value) == theType {
+		return reflect.ValueOf(value), nil
+	}
+
+	// 使用 JSON 序列化/反序列化进行类型转换
+	// 这种方法适用于大多数自定义结构体类型
+	jsonData, err := json.Marshal(value)
+	if err != nil {
+		return reflect.Value{}, fmt.Errorf("failed to marshal value for custom type %s: %v", theType.String(), err)
+	}
+
+	// 反序列化到目标类型
+	if err := json.Unmarshal(jsonData, theValue.Interface()); err != nil {
+		return reflect.Value{}, fmt.Errorf("failed to unmarshal value for custom type %s: %v", theType.String(), err)
+	}
+
+	return theValue.Elem(), nil
 }
 
 // 将切片类型（如 "[]int"、"[]string"）字符串描述的类型和值转换为 reflect.Value
