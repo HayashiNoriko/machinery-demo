@@ -44,7 +44,7 @@ func NewServer(cnf *config.Config, brokerServer brokersiface.Broker, backendServ
 		broker:          brokerServer,
 		backend:         backendServer,
 		lock:            lock,
-		scheduler:       cron.New(),
+		scheduler:       cron.New(cron.WithSeconds()), // 周期任务支持秒级
 	}
 
 	// Run scheduler job
@@ -361,7 +361,14 @@ func (server *Server) RegisterPeriodicTask(spec, name string, signature *tasks.S
 	//check spec
 	// 解析标准的 cron 表达式（本例中为"*/1 * * * ?"）
 	// 返回的 schedule 对象可用于计算下一次执行时间
-	schedule, err := cron.ParseStandard(spec)
+
+	// schedule, err := cron.ParseStandard(spec) // 源码做法，不支持秒级
+
+	// 修改后的做法：
+	// 使用 cron 实例的 NewParser 方法来解析支持秒级的 cron 表达式
+	// 因为创建 scheduler 时使用了 WithSeconds() 选项，所以这里的 parser 也支持秒级解析
+	parser := cron.NewParser(cron.Second | cron.Minute | cron.Hour | cron.Dom | cron.Month | cron.Dow | cron.Descriptor)
+	schedule, err := parser.Parse(spec)
 	if err != nil {
 		return err
 	}
